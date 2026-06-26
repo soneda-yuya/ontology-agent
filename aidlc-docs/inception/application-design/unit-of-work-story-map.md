@@ -17,6 +17,11 @@
 | US-E2 | 監査検索（ガバナンス） | U5 Audit | U2 |
 | US-F1 | ObjectType/LinkType 登録 | U1 Ontology | U2, U5 |
 | US-G1 | MCP ツール利用・認証 | U6 MCP | U2, 全サービス |
+| US-H1 | 共有メモリ保存 | U1 Ontology(型) | U3, U2, U5 |
+| US-H2 | 会話・メモ・ファイル横断検索 | U3 Retrieval(+FileIndex) | U1, U2 |
+| US-H3 | ユーザー嗜好・ルール取得 | U3 Retrieval | U1, U2 |
+| US-H4 | Activity 文脈読取 | U5 Activity | U2 |
+| US-H5 | MCP/HTTP/CLI 3経路 | U6 MCP/API/CLI | 全サービス |
 
 ## カバレッジ検証
 - **全ストーリー割当**: ✅ 12/12。

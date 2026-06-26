@@ -17,6 +17,12 @@
 - Intended stack: Python (FastAPI + Pydantic), LLM = Claude
 - Goal: design-document-first (設計ドキュメント先行)
 
+### Scope Extension (2026-06-26): Context Hub / Memory Server
+チーム共有のローカル・コンテキストハブとして再定義。各ユーザーのローカルAI（Claude Code/Cursor/Local LLM/自作Agent）のコンテキストを中央ハブ経由でチーム共有。
+- 追加: 共有メモリ型（Memory/Note/Conversation/WorkSession/Project/Preference, データ駆動登録）、File index（U3）、Activity log（U5, Audit と分離）、3インターフェース（MCP+HTTP+CLI, U6）、AI=ユーザー代理 principal。
+- 反映: requirements.md §11, personas.md P5, stories.md Feature H(US-H1..5), application-design.md, unit-of-work*.md。
+- 影響: U1/U2 不変、U3/U5/U6 を追加拡張。作り直しなし（追加的）。
+
 ## Workspace State
 - **Existing Code**: No (only `.aidlc-rule-details/` rules and `CLAUDE.md`)
 - **Programming Languages**: None yet (intended: Python)

@@ -46,3 +46,15 @@ U1 Ontology Core / U2 Permission / U3 Retrieval・RAG / U4 Action / U5 Audit / U
 - PBT-03 invariant: `decide()` 明示deny → 必ず拒否（US-C1-AC4）
 - PBT-02 round-trip: 型定義 serialize/deserialize（US-F1-AC3）
 - PBT-07 generator: Principal/Policy/ObjectType のドメインジェネレータ
+
+## Context Hub 拡張（変更要求 2026-06-26, 追加的）
+要件 §11 を反映。**ヘキサゴナル + データ駆動型 + ポート抽象化**により、ほぼ追加のみ。
+- **新ObjectType（U1レジストリに登録するだけ・コンポーネント追加なし）**: `Memory`, `Note`, `Conversation`, `WorkSession`, `Project`, `Preference`。
+  - これらは「チーム既定共有」ポリシー、業務データは従来どおり行レベル制限 → 中央 PermissionGateway が両立。
+- **新ポート**:
+  - `FileIndexPort`（ローカルファイル索引・検索）→ U3 Retrieval に内包。
+  - `ActivityLogPort`（作業履歴の追記・検索。Audit と別ストア）→ U5。
+- **新サービス**: `ActivityService`（記録/検索。AIが文脈として読める共有履歴。AuditService とは責務分離）。
+- **principal 拡張**: AI クライアント = ユーザー代理。Authenticator はトークンから「代理ユーザー＋ロール」を解決（AI 固有 principal は持たない）。
+- **inbound adapter 昇格**: `MCPServerAdapter` に加え `HTTPApiAdapter` と `CLIAdapter` を一級に（3経路とも同一サービス層・同一権限/監査を通過）。
+- **Activity vs Audit**: Audit=改ざん不可の証跡（ガバナンス閲覧）、Activity=広く読める作業履歴（文脈共有）。別ポート・別API・別アクセスポリシー。

@@ -191,3 +191,25 @@
 **Context**: Construction — U1 Functional Design gate.
 
 ---
+
+## Change Request — Context Hub / Memory Server
+**Timestamp**: 2026-06-26T00:00:00Z
+**Request**: ローカル常駐の「コンテキスト共有サーバー（Context Hub / Memory Server）」機能を追加。複数のAIクライアント（Claude Code / Cursor / Local LLM / 自作Agent）やアプリが、MCP/HTTP API/CLI 経由で共通の記憶領域にアクセス（作業内容保存、過去の会話・メモ・ファイル検索、プロジェクト情報取得、ユーザー嗜好/ルール読取、作業ログ追記）。バックエンド: SQLite/PostgreSQL + Vector DB + File index + Project metadata + Activity log。AI同士は直接でなく共通記憶を介して共有。
+**Current State**: CONSTRUCTION — U1 Functional Design 完了（未承認）。INCEPTION（要件/ストーリー/計画/アプリ設計/ユニット）完了済。PR #1 オープン中。
+**Impact Assessment**: 要件・アプリ設計・ユニットへ波及（主に追加的）。詳細は本ターンで提示し、ユーザー確認後に反映予定。
+**User Confirmation**: pending
+**Action Taken**: 影響評価とスコープ質問を提示（未反映）。
+**Artifacts Affected (予定)**: requirements.md, application-design/*, unit-of-work*.md, aidlc-state.md
+
+---
+
+## Change Request — Context Hub — Scoping Answers & Incorporation
+**Timestamp**: 2026-06-26T00:00:00Z
+**User Input**: 位置づけ = 「各ユーザーがローカルAIで利用するが、通常ローカルAIメモリに留まるコンテキストを全ユーザーで可能な限り共有したい」（→ Context Hub として再定義, クロスユーザー共有が主目的）; Activity log = Audit と分離; AI権限 = ユーザーの代理（principal はユーザー単位のまま）; File index = U3 Retrieval に内包。
+**Impact Assessment**: 追加的。U1/U2 不変、U3（+FileIndex）、U5（+Activity 分離）、U6（+HTTP/CLI）。新ObjectType はデータ駆動登録のみ（コンポーネント追加なし）。コンテキスト系は既定共有、業務機微は行レベル制限を中央 PermissionGateway で両立。
+**User Confirmation**: 機能追加要求 + スコープ回答により取り込み確認とみなす（modify, not restart）。
+**Action Taken**: requirements.md §11 追記; personas.md P5 追加; stories.md Feature H (US-H1..5) 追加; application-design.md 拡張; unit-of-work.md (U3/U5/U6) + story-map 更新; aidlc-state.md にスコープ拡張記録。
+**Artifacts Affected**: requirements.md, personas.md, stories.md, application-design.md, unit-of-work.md, unit-of-work-story-map.md, aidlc-state.md, audit.md
+**Note**: U1 Ontology Core の Functional Design は本変更の影響を受けず（メモリ系は型登録のみ）、むしろデータ駆動設計の妥当性が補強された。
+
+---

@@ -17,8 +17,8 @@
 - **PBT**: `decide()` invariant（PBT-03）。
 
 ### U3 Retrieval / RAG
-- **責務**: search/get/traverse/aggregate（phase1）、semantic_search（phase2）。クエリ構築（パラメタライズド）。
-- **公開**: RetrievalService、VectorStorePort。
+- **責務**: search/get/traverse/aggregate（phase1）、semantic_search（phase2）、**file search（Context Hub 拡張）**。クエリ構築（パラメタライズド）。
+- **公開**: RetrievalService、VectorStorePort、**FileIndexPort**。
 - 依存: U1（型）、U2（認可）、U5（監査）。
 
 ### U4 Action
@@ -26,14 +26,16 @@
 - **公開**: ActionService。
 - 依存: U1（ActionType）、U2、U5、ObjectStore.write。
 
-### U5 Audit
-- **責務**: 全イベント構造化記録、監査検索、追記専用（改ざん耐性）。
-- **公開**: AuditService、AuditSinkPort。
-- 依存: U2（監査検索の認可）。
+### U5 Audit & Activity（Context Hub 拡張で Activity を追加・分離）
+- **責務**:
+  - Audit: 全イベント構造化記録、監査検索、追記専用（改ざん耐性, ガバナンス閲覧）。
+  - **Activity（分離）**: 作業履歴の記録・検索。AIが文脈として読める共有履歴。別ストア・別API・広く読めるポリシー。
+- **公開**: AuditService、AuditSinkPort、**ActivityService、ActivityLogPort**。
+- 依存: U2（認可）。
 
-### U6 MCP / API
-- **責務**: MCP ツール公開、認証（Authenticator）、サービスへのディスパッチ。REST は任意。
-- **公開**: MCPServerAdapter、AuthenticatorPort、(RESTAdapter)。
+### U6 MCP / API / CLI（Context Hub 拡張で 3 経路を一級化）
+- **責務**: **MCP + HTTP API + CLI** の3経路を公開、認証（Authenticator: AI=ユーザー代理）、サービスへのディスパッチ。
+- **公開**: MCPServerAdapter、**HTTPApiAdapter、CLIAdapter**、AuthenticatorPort。
 - 依存: U2〜U5 のサービス。
 
 ## 開発順序（依存順）

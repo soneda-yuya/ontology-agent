@@ -94,6 +94,33 @@
 - **AC2** Given 無効/欠落トークン, When 呼び出し, Then 認証エラーで拒否（deny-by-default, SECURITY-08）。
 - **AC3** Given ツール `search_objects`/`get_object`/`traverse_link`/`aggregate`/`propose_action`/`invoke_action`, When 一覧取得, Then 各ツールのスキーマが MCP に公開される。
 
+## Feature H: Context Hub（チーム共有メモリ・拡張）
+
+### US-H1（P5 AIクライアント / 共有メモリ保存 / Must）
+**As** ユーザーの代理AI, **I want** 作業内容・メモ・会話・作業セッションを中央ハブに保存したい, **so that** ローカルに留まらずチームで共有できる。
+- **AC1** Given 代理ユーザーの認証, When Memory/Note/Conversation を保存, Then ハブに永続し、既定でチーム共有として保存される。
+- **AC2** Given 機微フラグ付き内容, When 保存, Then 行レベル権限に従い共有範囲が制限される。
+- **AC3** Given 保存操作, When 実行, Then Activity log に追記され、Audit にも記録される。
+
+### US-H2（P5 / 横断検索 / Must）
+**As** 代理AI, **I want** 過去の会話・メモ・**ファイル**・プロジェクト情報を自然言語で横断検索したい, **so that** 文脈を素早く再利用できる。
+- **AC1** Given クエリ, When 検索, Then メモリ系オブジェクトとファイル索引が統合的に返る（権限通過分のみ）。
+- **AC2** Given ファイル索引（FileIndexPort）, When ファイル検索, Then 該当ファイル/断片が返る。
+
+### US-H3（P5 / ユーザー嗜好・ルール取得 / Should）
+**As** 代理AI, **I want** ユーザーの好み・ルールを取得したい, **so that** それに沿って振る舞える。
+- **AC1** Given Preference/Rule オブジェクト, When 取得, Then 代理ユーザーに紐づく設定が返る。
+
+### US-H4（P5 / Activity 文脈読取 / Should）
+**As** 代理AI, **I want** 他AI/ユーザーの作業履歴（Activity log）を文脈として読みたい, **so that** チームの直近の動きを踏まえられる。
+- **AC1** Given Activity log, When 読取, Then 共有ポリシーに従い作業履歴が返る（Audit 証跡とは別API）。
+- **AC2** Activity と Audit は別ストア・別アクセス（US-E1/E2 と分離）。
+
+### US-H5（全ペルソナ / 3経路アクセス / Must）
+**As** 利用者/代理AI, **I want** MCP・HTTP API・CLI のいずれからもアクセスしたい, **so that** 各クライアントから使える。
+- **AC1** Given 3経路いずれか, When 同一操作, Then 同一サービス層・同一権限/監査を通過し結果が一致する。
+- **AC2** Given AI クライアント, When 認証, Then 代理ユーザー＋ロールが解決される（AI固有 principal なし）。
+
 ---
 
 ## INVEST / カバレッジ確認
