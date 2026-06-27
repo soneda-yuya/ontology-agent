@@ -13,7 +13,7 @@ foundational primitive that only carries the type at hook time.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Callable
 
 from ..domain.ontology import SharingLevel, TypeNotFoundError, TypeRegistry
 from ..domain.permission import (
@@ -26,6 +26,8 @@ from ..domain.permission import (
 )
 from ..domain.permission.models import Principal
 
+AuditHook = Callable[[dict[str, Any]], None]
+
 # Maps U1 OntologyService hook operations to permission operations.
 _OPERATION_MAP = {
     "register_type": Operation.ADMIN,
@@ -35,9 +37,33 @@ _OPERATION_MAP = {
 
 
 class PermissionGateway:
-    def __init__(self, policy_registry: PolicyRegistry, type_registry: TypeRegistry) -> None:
+    def __init__(
+        self,
+        policy_registry: PolicyRegistry,
+        type_registry: TypeRegistry,
+        audit: AuditHook | None = None,
+    ) -> None:
         self._policies = policy_registry
         self._types = type_registry
+        self._audit = audit
+
+    def set_audit_hook(self, audit: AuditHook) -> None:
+        """Wire deny-recording after construction (resolves the gateway<->audit cycle)."""
+        self._audit = audit
+
+    def _record_deny(
+        self, operation: str, object_type: str, principal: Principal | None, reason: str
+    ) -> None:
+        if self._audit is not None:
+            self._audit(
+                {
+                    "op": operation,
+                    "type": object_type,
+                    "principal": principal,
+                    "decision": "denied",
+                    "reason": reason,
+                }
+            )
 
     def _sharing(self, object_type: str) -> SharingLevel:
         try:
@@ -83,12 +109,18 @@ class PermissionGateway:
     # ---- U1 hook adapter ---------------------------------------------------
     def authorize_hook(self, operation: str, context: dict[str, Any]) -> None:
         """Adapter matching OntologyService's ``authorize(operation, context)``."""
+        object_type = context.get("type", "")
         principal = context.get("principal")
         if not isinstance(principal, Principal):
+            self._record_deny(operation, object_type, None, "no principal")
             raise PermissionDenied("no principal")  # deny-by-default (SECURITY-08)
         op = _OPERATION_MAP.get(operation)
         if op is None:
+            self._record_deny(operation, object_type, principal, "unknown operation")
             raise PermissionDenied("unknown operation")  # fail-closed
-        object_type = context.get("type", "")
         # Type-level gate (row-level for single objects handled by U3 with attrs).
-        self.authorize_object(principal, object_type, op, object_attrs=None)
+        try:
+            self.authorize_object(principal, object_type, op, object_attrs=None)
+        except PermissionDenied as exc:
+            self._record_deny(operation, object_type, principal, exc.reason)
+            raise

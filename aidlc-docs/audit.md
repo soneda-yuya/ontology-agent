@@ -449,3 +449,79 @@
 **Context**: Construction — U2 approved; VCS checkpoint.
 
 ---
+
+## PR #5 (U2) — Merge
+**Timestamp**: 2026-06-27T09:30:10Z
+**User Input**: "1" (merge)
+**AI Response**: Squash-merged PR #5 into main (4065d85), branch deleted. CI passed both jobs.
+**Context**: VCS — U2 merged.
+
+---
+
+## Construction — U5 Audit & Activity — Functional Design
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "進めてください" then Q-A1 = append-only + DB grants; Q-A2 = significant actions only (Activity); Q-A3 = Activity read via PermissionGateway (SHARED). (No ambiguity.)
+**AI Response**: Created branch feat/u5-audit. Generated domain-entities.md (AuditEvent/ActivityEvent/filters, PII-free), business-logic-model.md (record/query, audit_hook adapter, deny+allow recorded, fail-closed), business-rules.md (append-only, PII-free, TP-AU1..3). Updated aidlc-state.md.
+**Context**: Construction — U5 Functional Design.
+
+---
+
+## U5 Functional Design — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U5 functional design; requested approval (Request Changes / Continue to Next Stage = NFR Requirements).
+**Context**: Construction — U5 Functional Design gate.
+
+---
+
+## Construction — U5 NFR Requirements
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue to Next Stage" (U5 FD approved)
+**AI Response**: U5 NFR Requirements generated without questions (inherits U1/U2/shared; sole decision = synchronous append forced by INV-2/fail-closed). nfr-requirements.md + tech-stack-decisions.md (audit_events / activity_events tables, AuditSinkPort/ActivityLogPort, retention >=90d, append-only, PBT-02/07). Updated aidlc-state.md.
+**Context**: Construction — U5 NFR Requirements.
+
+---
+
+## U5 NFR Requirements — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U5 NFR requirements; requested approval (Request Changes / Continue to Next Stage = NFR Design).
+**Context**: Construction — U5 NFR Requirements gate.
+
+---
+
+## Construction — U5 NFR Design + Infrastructure (batched)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue" (interpreted per AI's offer = batch NFR Design + Infrastructure, both inheritance-only)
+**AI Response**: U5 NFR Requirements approved. Generated NFR Design (nfr-design-patterns.md: append-only ports, synchronous record/fail-closed, ref-only events, audit=RESTRICTED/activity=SHARED; logical-components.md: AuditService/ActivityService/AuditAdapter/ports/Postgres sinks + DI) and Infrastructure (lean) (infrastructure-design.md + deployment-architecture.md: inherits shared, adds audit_events/activity_events tables, app DB user has no UPDATE/DELETE on them, retention >=90d). Updated aidlc-state.md.
+**Context**: Construction — U5 NFR Design + Infrastructure.
+
+---
+
+## U5 NFR Design + Infrastructure — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U5 NFR Design + Infrastructure; requested approval. Next = Code Generation.
+**Context**: Construction — U5 design gate.
+
+---
+
+## Construction — U5 Code Generation (Part 1 + Part 2)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue" (design approved) then "Approve" (code-gen plan)
+**AI Response**: Implemented U5: domain/audit (AuditEvent/ActivityEvent/filters, SIGNIFICANT_OPS), AuditSinkPort/ActivityLogPort (append-only), AuditService/ActivityService/AuditAdapter (audit_hook records allow+deny, significant->activity, fail-closed), PostgresAuditSink/PostgresActivityLog (INSERT/SELECT only), migrations/0003, gateway deny-recording (optional audit hook + set_audit_hook), build_secured_ontology_service wires audit + registers pseudo types (AuditEvent RESTRICTED / ActivityEvent SHARED). Tests unit+PBT(round-trip)+integration. Verified: 56 non-integration, 61 incl. integration vs real PostgreSQL, ruff clean, U1/U2 non-regressed. Plan steps [x]; code-summary.md written.
+**Context**: Construction — U5 Code Generation complete (awaiting approval).
+
+---
+
+## U5 Code Generation — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented generated U5 code; requested approval (Request Changes / Continue to Next Stage).
+**Context**: Construction — U5 Code Generation gate.
+
+---
+
+## Construction — U5 Code Generation — Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue"
+**AI Response**: U5 Code Generation approved. Creating PR for U5 (unit-per-PR rhythm) before U3.
+**Context**: Construction — U5 approved; VCS checkpoint.
+
+---

@@ -65,7 +65,13 @@
   - [x] NFR Design (approved; pure-function decision core, deny-by-default resolution, fail-closed gateway, in-memory PolicyRegistry)
   - [x] Infrastructure Design (lean) (approved; inherits shared-infrastructure, adds policies table)
   - [x] Code Generation (implemented — awaiting approval; domain/permission, gateway, PostgresPolicyStore, secured container; 50 tests pass incl. integration, ruff clean; U1 sharing_level added backward-compatibly)
-- [ ] U5 Audit, U3 Retrieval, U4 Action, U6 MCP (pending)
+- **U5 Audit & Activity**
+  - [x] Functional Design (approved; append-only + DB grants, Activity=significant actions/SHARED read, audit query governance-only, PII-free, fail-closed)
+  - [x] NFR Requirements (approved; synchronous append for INV-2, retention >=90d, inherits U1/U2/shared)
+  - [x] NFR Design (approved-batch; append-only ports, synchronous record, ref-only events, audit=RESTRICTED/activity=SHARED)
+  - [x] Infrastructure Design (lean) (approved-batch; inherits shared, adds audit_events/activity_events tables, no UPDATE/DELETE grant)
+  - [x] Code Generation (implemented — awaiting approval; domain/audit, AuditService/ActivityService/AuditAdapter, Postgres sinks, gateway deny-recording, secured container wiring; 61 tests pass incl. integration, ruff clean; U1/U2 non-regressed)
+- [ ] U3 Retrieval, U4 Action, U6 MCP (pending)
 - [ ] Build and Test
 - Note: U2 adds `ObjectType.sharing_level` to U1 (backward-compatible, default RESTRICTED)
 
