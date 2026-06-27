@@ -57,8 +57,8 @@
   - [x] Functional Design (approved)
   - [x] NFR Requirements (approved; small scale, JSONB single table, in-memory registry, p95<100ms, Hypothesis)
   - [x] NFR Design (approved; fail-closed no-retry, tx boundary, no read cache, parameterized, PII redaction)
-  - [x] Infrastructure Design (lean) (artifacts created — awaiting approval; cloud VM + managed PostgreSQL, .env secrets, TLS + at-rest encryption; shared-infrastructure.md)
-  - [ ] Code Generation (design-first checkpoint here)
+  - [x] Infrastructure Design (lean) (approved/merged)
+  - [x] Code Generation (implemented — awaiting approval; src/mini_aip U1, 30 unit+PBT tests pass, ruff clean)
 - [ ] U2 Permission … U6 MCP (pending)
 - [ ] Build and Test
 

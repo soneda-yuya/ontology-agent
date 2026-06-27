@@ -1,0 +1,36 @@
+[project]
+name = "mini-aip"
+version = "0.1.0"
+description = "Mini AIP / Context Hub — Ontology-driven shared context server"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.6,<3",
+    "pydantic-settings>=2.2,<3",
+    "psycopg[binary]>=3.1,<4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.1,<9",
+    "hypothesis>=6.100,<7",
+    "ruff>=0.4",
+    "mypy>=1.10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mini_aip"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+markers = [
+    "integration: tests requiring a live PostgreSQL (run in Build & Test phase)",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
