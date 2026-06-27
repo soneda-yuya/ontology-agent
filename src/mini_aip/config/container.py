@@ -10,14 +10,17 @@ from __future__ import annotations
 from ..adapters.outbound.postgres import (
     ConnectionProvider,
     PostgresObjectStore,
+    PostgresPolicyStore,
     PostgresTypeRegistry,
 )
 from ..domain.ontology import TypeRegistry
-from ..services import OntologyService
+from ..domain.permission import PolicyRegistry
+from ..services import OntologyService, PermissionGateway
 from .settings import Settings
 
 
 def build_ontology_service(settings: Settings | None = None) -> OntologyService:
+    """Unsecured build (authorize/audit = no-op). Useful for bootstrap/tests."""
     settings = settings or Settings()
     provider = ConnectionProvider(settings.database_url)
     type_store = PostgresTypeRegistry(provider)
@@ -28,7 +31,37 @@ def build_ontology_service(settings: Settings | None = None) -> OntologyService:
         registry=registry,
         type_store=type_store,
         object_store=object_store,
-        # authorize / audit: no-op defaults (U2/U5 inject real implementations here).
+        # authorize / audit: no-op defaults (U5 audit injected later).
     )
     service.reload_types()
     return service
+
+
+def build_secured_ontology_service(settings: Settings | None = None) -> OntologyService:
+    """Wires U2 PermissionGateway into U1's authorize hook (real enforcement).
+
+    Bootstrap note: with an empty `policies` table, deny-by-default blocks even
+    ADMIN (register_type). Seed at least one admin ALLOW rule (e.g. via
+    PostgresPolicyStore.save) before using this service to register types.
+    """
+    settings = settings or Settings()
+    provider = ConnectionProvider(settings.database_url)
+    type_store = PostgresTypeRegistry(provider)
+    object_store = PostgresObjectStore(provider)
+    policy_store = PostgresPolicyStore(provider)
+
+    type_registry = TypeRegistry()
+    type_registry.load(type_store.load_all())
+
+    policy_registry = PolicyRegistry()
+    policy_registry.load(policy_store.load_all())
+
+    gateway = PermissionGateway(policy_registry, type_registry)
+
+    return OntologyService(
+        registry=type_registry,
+        type_store=type_store,
+        object_store=object_store,
+        authorize=gateway.authorize_hook,
+        # audit: injected when U5 lands.
+    )

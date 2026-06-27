@@ -28,6 +28,7 @@ from .types import (
     ObjectType,
     OntologyObject,
     PropertyType,
+    SharingLevel,
     TypeDef,
     TypeKind,
 )
@@ -47,6 +48,7 @@ __all__ = [
     "OntologyObject",
     "PiiRedactor",
     "PropertyType",
+    "SharingLevel",
     "TypeDef",
     "TypeKind",
     "TypeNotFoundError",

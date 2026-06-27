@@ -49,7 +49,11 @@ jobs:
         run: ruff check src tests
 
       - name: Apply database migrations
-        run: psql "$MINIAIP_DATABASE_URL" -f migrations/0001_u1_ontology.sql
+        run: |
+          for f in $(ls migrations/*.sql | sort); do
+            echo "applying $f"
+            psql "$MINIAIP_DATABASE_URL" -f "$f"
+          done
 
       - name: Run tests (incl. integration)
         run: pytest -q

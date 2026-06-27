@@ -59,8 +59,15 @@
   - [x] NFR Design (approved; fail-closed no-retry, tx boundary, no read cache, parameterized, PII redaction)
   - [x] Infrastructure Design (lean) (approved/merged)
   - [x] Code Generation (implemented — awaiting approval; src/mini_aip U1, 30 unit+PBT tests pass, ruff clean)
-- [ ] U2 Permission … U6 MCP (pending)
+- **U2 Permission**
+  - [x] Functional Design (approved; attribute-match predicates, deny-by-default + explicit-deny-wins, ObjectType.sharing_level shared/restricted, principal carries attributes)
+  - [x] NFR Requirements (approved; in-memory policy load, decide p95<5ms, inherits U1/shared)
+  - [x] NFR Design (approved; pure-function decision core, deny-by-default resolution, fail-closed gateway, in-memory PolicyRegistry)
+  - [x] Infrastructure Design (lean) (approved; inherits shared-infrastructure, adds policies table)
+  - [x] Code Generation (implemented — awaiting approval; domain/permission, gateway, PostgresPolicyStore, secured container; 50 tests pass incl. integration, ruff clean; U1 sharing_level added backward-compatibly)
+- [ ] U5 Audit, U3 Retrieval, U4 Action, U6 MCP (pending)
 - [ ] Build and Test
+- Note: U2 adds `ObjectType.sharing_level` to U1 (backward-compatible, default RESTRICTED)
 
 ### 🟡 OPERATIONS PHASE
 - [ ] (placeholder)

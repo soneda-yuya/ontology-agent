@@ -45,6 +45,18 @@ class TypeKind(str, Enum):
     ACTION = "action"
 
 
+class SharingLevel(str, Enum):
+    """Governance metadata used by U2 Permission.
+
+    SHARED: team-wide readable (context types — Context Hub default sharing).
+    RESTRICTED: subject to role/row-level policies (business types). Default
+    RESTRICTED is the safe (deny-by-default-aligned) choice.
+    """
+
+    SHARED = "shared"
+    RESTRICTED = "restricted"
+
+
 # Frozen + extra=forbid gives value-semantics (needed for round-trip equality)
 # and rejects unknown keys (analogous to BR-10 at the type level).
 _MODEL_CONFIG = {"frozen": True, "extra": "forbid"}
@@ -80,6 +92,9 @@ class ObjectType(BaseModel):
     id_property: str = "id"
     title_property: str | None = None
     text_properties: tuple[str, ...] = ()
+    # Governance metadata (U2). Default RESTRICTED keeps round-trip backward
+    # compatible: types persisted before this field load as RESTRICTED.
+    sharing_level: SharingLevel = SharingLevel.RESTRICTED
 
     @model_validator(mode="after")
     def _check(self) -> "ObjectType":
