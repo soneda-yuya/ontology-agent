@@ -213,3 +213,64 @@
 **Note**: U1 Ontology Core の Functional Design は本変更の影響を受けず（メモリ系は型登録のみ）、むしろデータ駆動設計の妥当性が補強された。
 
 ---
+
+## PR #1 — Merge
+**Timestamp**: 2026-06-26T14:49:08Z
+**User Input**: "これを一旦マージしますね" → Squash merge + delete branch を選択。
+**AI Response**: Squash-merged PR #1 into main (c5d1954), deleted branch design/mini-aip-inception (remote+local). main now holds INCEPTION + Context Hub + U1 functional design.
+**Context**: VCS — PR #1 merged.
+
+---
+
+## Construction — U1 Functional Design — Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "お願いします"（U1 Functional Design 承認 → NFR Requirements へ進行を依頼）
+**AI Response**: U1 Functional Design 承認として記録。新ブランチ design/u1-nfr を main から作成。U1 NFR Requirements ステージを開始。
+**Context**: Construction — U1 Functional Design approved.
+
+---
+
+## Construction — U1 NFR Requirements — Start
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Created u1-ontology-core-nfr-requirements-plan.md with NFR questions (scalability/performance/availability/security/tech-stack). Presented to user.
+**Context**: Construction — U1 NFR Requirements (planning).
+
+---
+
+## Construction — U1 NFR Requirements — Answers & Artifacts
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: Q-N1 = small scale; Q-N2 = JSONB single table; Q-N3 = startup full load + reload on change (asked for alternatives first; explained TTL/LISTEN-NOTIFY/version-check; chose A); Q-N4 = p95<100ms; Q-N5 = Hypothesis. (No ambiguity after N3 clarification.)
+**AI Response**: Generated nfr-requirements.md and tech-stack-decisions.md (JSONB objects table + GIN, type_defs table, in-memory registry, parameterized queries, Hypothesis). Updated aidlc-state.md.
+**Context**: Construction — U1 NFR Requirements.
+
+---
+
+## U1 NFR Requirements — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U1 NFR requirements; requested approval (Request Changes / Continue to Next Stage = NFR Design).
+**Context**: Construction — U1 NFR Requirements gate.
+
+---
+
+## Construction — U1 NFR Requirements — Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue to Next Stage"
+**AI Response**: U1 NFR Requirements approved. Proceeding to U1 NFR Design.
+**Context**: Construction — U1 NFR Requirements approved.
+
+---
+
+## Construction — U1 NFR Design
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: Q-ND1 = no retry / immediate fail-closed (future-extensible to retry); Q-ND2 = no read cache. (No ambiguity.)
+**AI Response**: Generated nfr-design-patterns.md (fail-closed, transaction boundary, in-memory registry, JSONB/GIN no-cache, parameterized, PII redaction, PBT patterns) and logical-components.md (ConnectionProvider, TxManager, InMemoryTypeRegistry, DynamicModelFactory, PiiRedactor, SqlSpecBuilder; future extension points). Updated aidlc-state.md.
+**Context**: Construction — U1 NFR Design.
+
+---
+
+## U1 NFR Design — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U1 NFR design; requested approval (Request Changes / Continue to Next Stage = Infrastructure Design).
+**Context**: Construction — U1 NFR Design gate.
+
+---
