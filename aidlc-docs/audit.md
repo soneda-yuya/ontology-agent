@@ -297,3 +297,48 @@
 **Context**: Construction — U1 Infrastructure Design gate.
 
 ---
+
+## PR #3 — Merge
+**Timestamp**: 2026-06-27T08:04:30Z
+**User Input**: "マージ！"
+**AI Response**: Squash-merged PR #3 into main (fc44fa1), deleted branch. U1 design complete (Functional/NFR/Infra).
+**Context**: VCS — PR #3 merged.
+
+---
+
+## Construction — U1 Infrastructure Design — Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: (implied by merge + proceeding) U1 Infrastructure Design approved.
+**Context**: Construction — U1 Infrastructure Design approved.
+
+---
+
+## Construction — U1 Code Generation — Part 1 (Planning)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "1"（U1 Code Generation を選択）+ Q&A（Ports とは / レイヤード比較）後「多分理解しました。進めましょう」
+**AI Response**: Created u1-ontology-core-code-generation-plan.md (13 steps, workspace root src/mini_aip, story traceability). Explained Ports concept and mapping to layered/DDD. Plan approved by user.
+**Context**: Construction — U1 Code Generation Part 1.
+
+---
+
+## U1 Code Generation — Plan Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "多分理解しました。進めましょう"
+**AI Response**: Plan approved. Executing Part 2 (generation).
+**Context**: Construction — U1 Code Generation Part 2 start.
+
+---
+
+## Construction — U1 Code Generation — Part 2 (Generation)
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Generated U1 application code under src/mini_aip (domain/ontology, ports, postgres adapters, services, config), migrations/0001_u1_ontology.sql, tests (unit/pbt/integration), pyproject.toml, docker-compose.yml, Dockerfile, .env.example, and code-summary.md. Smoke-verified ahead of Build & Test: `pytest -m "not integration"` = 30 passed; `ruff check` = clean. Integration (DB) tests deselected for Build & Test. All plan steps marked [x]; aidlc-state.md updated.
+**Context**: Construction — U1 Code Generation complete (awaiting approval).
+
+---
+
+## U1 Code Generation — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented generated U1 code; requested approval (Request Changes / Continue to Next Stage).
+**Context**: Construction — U1 Code Generation gate.
+
+---

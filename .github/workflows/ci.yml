@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    services:
+      postgres:
+        image: postgres:16.3
+        env:
+          POSTGRES_USER: miniaip
+          POSTGRES_PASSWORD: miniaip
+          POSTGRES_DB: mini_aip
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U miniaip -d mini_aip"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      MINIAIP_DATABASE_URL: postgresql://miniaip:miniaip@localhost:5432/mini_aip
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Lint (ruff)
+        run: ruff check src tests
+
+      - name: Apply database migrations
+        run: psql "$MINIAIP_DATABASE_URL" -f migrations/0001_u1_ontology.sql
+
+      - name: Run tests (incl. integration)
+        run: pytest -q
