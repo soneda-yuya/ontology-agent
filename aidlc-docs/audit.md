@@ -274,3 +274,26 @@
 **Context**: Construction — U1 NFR Design gate.
 
 ---
+
+## Construction — U1 NFR Design — Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue to Next Stage"
+**AI Response**: U1 NFR Design approved. Proceeding to U1 Infrastructure Design (lean).
+**Context**: Construction — U1 NFR Design approved.
+
+---
+
+## Construction — U1 Infrastructure Design (lean)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: Q-I1 = Cloud VM / managed; Q-I2 = env vars + .env; Q-I3 = TLS + DB TLS + disk encryption. (No ambiguity.)
+**AI Response**: Generated infrastructure-design.md, deployment-architecture.md, and shared-infrastructure.md (cloud VM single instance running modular monolith, managed PostgreSQL, TLS termination, deny-by-default network, .env secrets, SECURITY-01/06/07/09/10/12/14 mapped). Updated aidlc-state.md.
+**Context**: Construction — U1 Infrastructure Design.
+
+---
+
+## U1 Infrastructure Design — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U1 infrastructure design; requested approval. Next = Code Generation (design-first checkpoint).
+**Context**: Construction — U1 Infrastructure Design gate.
+
+---
