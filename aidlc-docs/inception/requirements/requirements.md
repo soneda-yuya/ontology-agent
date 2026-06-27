@@ -169,3 +169,14 @@ Mini AIP コア（Ontology + RAG + Permission + Action + Audit）は土台とし
 ### 11.5 Out of Scope への追記
 - AI エージェント個別の独立 principal 化（今回は「ユーザー代理」に留める）。
 - リアルタイム双方向同期（プッシュ通知）— まずはハブ経由の保存/取得。
+
+---
+
+## 12. Future / Roadmap（現スコープ外・記録のみ）
+
+### 12.1 自律的オントロジー更新（U7 "Ontology Curator" 候補）
+将来、オントロジー（型・関係・ルール）を**エージェントが自律的に提案 → 統制承認で適用**する仕組みを足せる。
+- **方式**: propose→approve（Lv1 推奨）。会話/オブジェクト/Activity の観測から型差分を提案 → ガバナンス（ADMIN）が承認 → `register_type` 適用 → Audit 記録。
+- **既存設計との接続**: Ontology(U1) + Permission(U2) + Action propose/approve(U4) + Audit(U5) がそのまま土台。新ユニット **U7 Ontology Curator** として追加可能。
+- **前提課題**: 型のバージョニング（Q-F2 で MVP は見送り中。変更/削除の自動化には移行設計が必要）、自動追加属性は既定 RESTRICTED + PII 疑い、型重複の dedup/キュレーション、Curator ロールの厳格スコープ。
+- **判断**: 2026-06-27 時点では記録のみ（A 選択）。完全自律(Lv3)は非推奨、Lv1 から。

@@ -342,3 +342,110 @@
 **Context**: Construction — U1 Code Generation gate.
 
 ---
+
+## U1 Code Generation — Approval + PR #4 Merge
+**Timestamp**: 2026-06-27T08:48:44Z
+**User Input**: "これでPRを作成して欲しいです。あとCIでtestを実行したいのでgithub actionも実装してもらえますか" / "CIが通ったらマージして"
+**AI Response**: Added .github/workflows/ci.yml (ruff + pytest incl. integration against PostgreSQL service, Python 3.11/3.12). Verified locally 32 passed (incl. integration vs real PostgreSQL). Opened PR #4; CI passed both jobs; squash-merged to main (a4e88ba), branch deleted.
+**Context**: Construction — U1 Code Generation approved & merged; CI established.
+
+---
+
+## Construction — U2 Permission — Functional Design
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "進めてください" then Q-P1 = attribute-match predicate; Q-P2 = deny-by-default + explicit-deny-wins; Q-P3 = sharing_level on ObjectType (shared/restricted); Q-P4 = principal carries attributes from auth. (No ambiguity.)
+**AI Response**: Created branch feat/u2-permission. Generated domain-entities.md, business-logic-model.md, business-rules.md (decide/row_constraint/gateway, precedence, PBT-03 invariants TP-P1..5). Noted backward-compatible addition of ObjectType.sharing_level to U1. Updated aidlc-state.md.
+**Context**: Construction — U2 Functional Design.
+
+---
+
+## U2 Functional Design — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U2 functional design; requested approval (Request Changes / Continue to Next Stage = NFR Requirements).
+**Context**: Construction — U2 Functional Design gate.
+
+---
+
+## Discussion — Autonomous Ontology Update (roadmap)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "オントロジーを自律的に更新していくことはできないのでしょうか" → after explanation chose "A" (record as roadmap, continue U2).
+**AI Response**: Explained autonomy levels (Lv0-3), mapping to propose→approve via U1/U2/U4/U5, and prerequisites (versioning, PII defaults, dedup, scoped curator role). Recorded as requirements §12 (Future / Roadmap, U7 Ontology Curator candidate). Continuing U2.
+**Context**: Inception/requirements — roadmap note (no scope change now).
+
+---
+
+## Construction — U2 Functional Design — Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "A"（記録して U2 続行 = U2 FD 承認 + 次へ）
+**AI Response**: U2 Functional Design approved. Proceeding to U2 NFR Requirements.
+**Context**: Construction — U2 Functional Design approved.
+
+---
+
+## Construction — U2 NFR Requirements
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: Q-N2P1 = startup load + reload (in-memory policies); Q-N2P2 = pure-function in-memory p95<5ms. (No ambiguity.)
+**AI Response**: Generated nfr-requirements.md and tech-stack-decisions.md (in-memory policies, PolicyStorePort, policies table JSONB, decide as pure functions, PBT-03/07, inherits U1/shared). Noted ObjectType.sharing_level backward-compatible addition. Updated aidlc-state.md.
+**Context**: Construction — U2 NFR Requirements.
+
+---
+
+## U2 NFR Requirements — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U2 NFR requirements; requested approval (Request Changes / Continue to Next Stage = NFR Design).
+**Context**: Construction — U2 NFR Requirements gate.
+
+---
+
+## Construction — U2 NFR Requirements — Approval + NFR Design
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue to Next Stage"
+**AI Response**: U2 NFR Requirements approved. NFR Design generated without new questions (no genuine ambiguity; inherits U1 patterns + pure-function core): nfr-design-patterns.md (pure-function decision core, deterministic resolution, fail-closed gateway, in-memory PolicyRegistry, PII-safe reasons, PBT-03/07) and logical-components.md (Decision functions, PolicyRegistry, PermissionGateway, AuthorizeHookAdapter, PolicyStorePort, PostgresPolicyStore + DI plan). Updated aidlc-state.md.
+**Context**: Construction — U2 NFR Design.
+
+---
+
+## U2 NFR Design — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U2 NFR design; requested approval (Request Changes / Continue to Next Stage = Infrastructure Design lean).
+**Context**: Construction — U2 NFR Design gate.
+
+---
+
+## Construction — U2 NFR Design — Approval + Infrastructure (lean)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue to Next Stage"
+**AI Response**: U2 NFR Design approved. Infrastructure Design (lean) generated without questions — fully inherits shared-infrastructure; only addition is the `policies` table (migration 0002 in Code Generation) + least-privilege DB grant. Created infrastructure-design.md and deployment-architecture.md. Updated aidlc-state.md.
+**Context**: Construction — U2 Infrastructure Design (lean).
+
+---
+
+## U2 Infrastructure Design — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U2 infrastructure design; requested approval. Next = Code Generation.
+**Context**: Construction — U2 Infrastructure Design gate.
+
+---
+
+## Construction — U2 Code Generation (Part 1 + Part 2)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue to Next Stage" (infra approved) then "Approve & Continue" (code-gen plan approved)
+**AI Response**: Implemented U2: backward-compatible U1 change (SharingLevel + ObjectType.sharing_level), domain/permission (models, decide/row_constraint pure functions, PolicyRegistry, PermissionDenied), PolicyStorePort + PostgresPolicyStore, PermissionGateway + authorize_hook, migrations/0002_u2_policies.sql, build_secured_ontology_service (injects authorize into U1), tests (unit + PBT TP-P1/P2/P4 + integration). Updated CI to apply all migrations. Verified: 47 passed (non-integration), 50 passed incl. integration vs real PostgreSQL, ruff clean, U1 tests non-regressed. Plan steps all [x]; code-summary.md written.
+**Context**: Construction — U2 Code Generation complete (awaiting approval).
+
+---
+
+## U2 Code Generation — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented generated U2 code; requested approval (Request Changes / Continue to Next Stage).
+**Context**: Construction — U2 Code Generation gate.
+
+---
+
+## Construction — U2 Code Generation — Approval
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue to Next Stage"
+**AI Response**: U2 Code Generation approved. Creating PR for U2 (per established unit-per-PR rhythm) before starting U5.
+**Context**: Construction — U2 approved; VCS checkpoint.
+
+---
