@@ -525,3 +525,41 @@
 **Context**: Construction — U5 approved; VCS checkpoint.
 
 ---
+
+## PR #6 (U5) — Merge
+**Timestamp**: 2026-06-27T09:58:17Z
+**User Input**: "1" (merge)
+**AI Response**: Squash-merged PR #6 into main (1c8b2d5), branch deleted. CI passed.
+**Context**: VCS — U5 merged. 3/6 units complete.
+
+---
+
+## Construction — U3 Retrieval — Functional Design
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "進めてください" then Q-R1 = eq+comparison+contains; Q-R2 = count+group_by+period; Q-R3 = dedicated FileIndexPort + FTS; Q-R4 = get returns None on row-deny (IDOR hide). (No ambiguity.)
+**AI Response**: Created branch feat/u3-retrieval. Generated domain-entities.md (ObjectQuery/FieldFilter/AggregateQuery/AggregateResult/FileMatch/SqlSpec), business-logic-model.md (search/get/traverse/aggregate/file_search; row_constraint->SQL via JSONB; audited; INV-1), business-rules.md (permission-filtered, aggregate population=permitted, IDOR hide, TP-R1..R4). Updated aidlc-state.md.
+**Context**: Construction — U3 Functional Design.
+
+---
+
+## U3 Functional Design — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U3 functional design; requested approval (Request Changes / Continue to Next Stage = NFR Requirements).
+**Context**: Construction — U3 Functional Design gate.
+
+---
+
+## Construction — U3 NFR Requirements + NFR Design + Infrastructure (batched)
+**Timestamp**: 2026-06-27T00:00:00Z
+**User Input**: "Continue" (interpreted per AI's offer = batch the 3 inheritance-heavy stages)
+**AI Response**: U3 FD approved. Generated NFR Requirements (index-backed, FTS via tsvector, p95 targets), NFR Design (permission-before-IO, constraint->SQL via pure SqlSpecBuilder, IDOR-hide, audit wrap, ObjectStorePort extended with query/aggregate, new FileIndexPort, VectorStorePort phase2 interface), Infrastructure lean (file_index table tsvector+GIN, migration 0004, no extension needed). Updated aidlc-state.md.
+**Context**: Construction — U3 NFR + Infrastructure.
+
+---
+
+## U3 NFR + Infrastructure — Approval Prompt
+**Timestamp**: 2026-06-27T00:00:00Z
+**AI Response**: Presented U3 NFR Design + Infrastructure; requested approval. Next = Code Generation.
+**Context**: Construction — U3 design gate.
+
+---

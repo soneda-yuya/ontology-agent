@@ -71,7 +71,13 @@
   - [x] NFR Design (approved-batch; append-only ports, synchronous record, ref-only events, audit=RESTRICTED/activity=SHARED)
   - [x] Infrastructure Design (lean) (approved-batch; inherits shared, adds audit_events/activity_events tables, no UPDATE/DELETE grant)
   - [x] Code Generation (implemented — awaiting approval; domain/audit, AuditService/ActivityService/AuditAdapter, Postgres sinks, gateway deny-recording, secured container wiring; 61 tests pass incl. integration, ruff clean; U1/U2 non-regressed)
-- [ ] U3 Retrieval, U4 Action, U6 MCP (pending)
+- **U3 Retrieval / RAG**
+  - [x] Functional Design (approved; eq+comparison+contains filters, count/group_by/period aggregate, FileIndexPort+FTS, get returns None on row-deny/IDOR; row_constraint->SQL, audited)
+  - [x] NFR Requirements (approved-batch; index-backed, FTS via tsvector, p95 targets, inherits)
+  - [x] NFR Design (approved-batch; permission-before-IO, constraint->SQL, IDOR-hide, pure SqlSpecBuilder, audit wrap)
+  - [x] Infrastructure Design (lean) (awaiting approval; inherits shared, adds file_index table + tsvector GIN)
+  - [ ] Code Generation
+- [ ] U4 Action, U6 MCP (pending)
 - [ ] Build and Test
 - Note: U2 adds `ObjectType.sharing_level` to U1 (backward-compatible, default RESTRICTED)
 
